@@ -409,22 +409,29 @@ contract StandardToken is ERC20 {
  * Note they can later distribute these tokens as they wish using `transfer` and other
  * `StandardToken` functions.
  */
+
 contract SimpleToken is StandardToken {
 
   string public name;
   string public symbol;
   string public version = "1.0.0";
-  uint8 public constant decimals = 18;
+  uint8 public decimals;
 
-  uint256 public constant INITIAL_SUPPLY = 10000 * (10 ** uint256(decimals));
-
-  /**
+   /**
    * @dev Constructor that gives msg.sender all of existing tokens.
    */
-  constructor() public {
-    totalSupply_ = INITIAL_SUPPLY;
-    balances[msg.sender] = INITIAL_SUPPLY;
-    emit Transfer(address(0), msg.sender, INITIAL_SUPPLY);
+  constructor(
+        uint256 initialSupply,
+        string tokenName,
+        string tokenSymbol,
+        string tokenDecimal
+  ) public {
+    totalSupply_ = initialSupply * (10 ** uint256(decimals));  // Update total supply with the decimal amount
+    balances[msg.sender] = initialSupply;
+    emit Transfer(address(0), msg.sender, initialSupply);
+    name = tokenName;
+    symbol = tokenSymbol;
+    decimals = tokenDecimal;
   }
 
 }
